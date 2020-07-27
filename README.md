@@ -4,7 +4,7 @@ Upload your dapp to the Swarm decentralized storage.
 ## Usage
 ```
 - name: Upload to swarm
-  uses: Etherna/swarm-upload-action@0.1
+  uses: Etherna/swarm-upload-action@0.2
   with:
     localRoot: build
     defaultPath: index.html

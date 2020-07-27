@@ -8,12 +8,12 @@ const mimetypes = require("mime-types")
  * @returns {object}
  */
 exports.prepareFormData = (files, localRoot, defaultPath) => {
-  let data = {}
+  let formData = {}
 
   if (defaultPath) {
     const filePath = `${localRoot}/${defaultPath}`
     const contentType = mimetypes.lookup(filePath)
-    data[""] = {
+    formData[""] = {
       data: fs.readFileSync(filePath),
       contentType,
     }
@@ -24,19 +24,19 @@ exports.prepareFormData = (files, localRoot, defaultPath) => {
     const contentType = mimetypes.lookup(filePath)
     const data = fs.readFileSync(filePath)
 
-    data[fileName] = {
+    formData[fileName] = {
       data,
       contentType
     }
 
     if (/\/index\.html$/.test(fileName)) {
       const defaultFileName = fileName.replace(/\/index\.html$/, "/")
-      data[defaultFileName] = {
+      formData[defaultFileName] = {
         data,
         contentType
       }
     }
   })
 
-  return data
+  return formData
 }

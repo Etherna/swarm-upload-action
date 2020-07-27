@@ -1,6 +1,6 @@
 {
   "name": "swarm-upload-action",
-  "version": "0.1",
+  "version": "0.2",
   "author": "Mattia Dalzocchio",
   "homepage": "https://github.com/Etherna/swarm-upload-action",
   "repository": {
