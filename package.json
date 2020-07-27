@@ -2,10 +2,10 @@
   "name": "swarm-upload-action",
   "version": "0.1",
   "author": "Mattia Dalzocchio",
-  "homepage": "https://github.com/mattiaz9/swarm-upload-action",
+  "homepage": "https://github.com/Etherna/swarm-upload-action",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mattiaz9/swarm-upload-action.git"
+    "url": "git+https://github.com/Etherna/swarm-upload-action.git"
   },
   "main": "index.js",
   "license": "MIT",
