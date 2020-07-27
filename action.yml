@@ -1,0 +1,28 @@
+name: 'Conditional Cancel Action'
+description: 'Upload your dapp to the Swarm decentralized storage'
+inputs:
+  localRoot:
+    description: 'Local folder to upload'
+    required: true
+  gateway:
+    description: 'Swarm Gateway Host'
+    required: false
+    default: 'https://swarm-gateways.net'
+  defaultPath:
+    description: 'Default path (eg: index.html)'
+    required: false
+  feedTopic:
+    description: 'Feed topic hash (optional)'
+    required: false
+  feedName:
+    description: 'Feed topic name (optional)'
+    required: false
+  feedUserPrivateKey:
+    description: 'Feed user (optional / required to update feed)'
+    required: false
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
+branding:
+  icon: 'hexagon'
+  color: 'white'

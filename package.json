@@ -1,0 +1,35 @@
+{
+  "name": "swarm-upload-action",
+  "version": "0.1",
+  "author": "Mattia Dalzocchio",
+  "homepage": "https://github.com/mattiaz9/swarm-upload-action",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mattiaz9/swarm-upload-action.git"
+  },
+  "main": "index.js",
+  "license": "MIT",
+  "keywords": [
+    "deploy",
+    "swarm",
+    "dapp",
+    "react",
+    "github",
+    "action"
+  ],
+  "dependencies": {
+    "@actions/core": "^1.2.4",
+    "@actions/github": "^4.0.0",
+    "@erebos/bzz-feed": "^0.13.2",
+    "@erebos/secp256k1": "^0.10.0",
+    "@erebos/swarm-node": "^0.13.0",
+    "glob": "^7.1.6",
+    "mime-types": "^2.1.27"
+  },
+  "devDependencies": {
+    "@zeit/ncc": "^0.22.3"
+  },
+  "scripts": {
+    "build": "ncc build index.js -o dist -m"
+  }
+}
