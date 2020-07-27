@@ -1,4 +1,4 @@
-name: 'Conditional Cancel Action'
+name: 'Swarm Upload'
 description: 'Upload your dapp to the Swarm decentralized storage'
 inputs:
   localRoot:
