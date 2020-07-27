@@ -23,3 +23,7 @@ Upload your dapp to the Swarm decentralized storage.
 | `feedUserPrivateKey` | 617610264fc...87897bf1c1c       |                           | Feed user (optional / required to update feed) |
 
 To update a feed you must specify one between `feedTopic` and `feedName`, as well as the `feedUserPrivateKey`.
+
+## Issues
+We collect feedbacks with Jira:
+https://etherna.atlassian.net/projects/SUA/issues
