@@ -1,6 +1,6 @@
 {
   "name": "swarm-upload-action",
-  "version": "0.2",
+  "version": "1.0.0",
   "author": "Mattia Dalzocchio",
   "homepage": "https://github.com/Etherna/swarm-upload-action",
   "repository": {
@@ -18,18 +18,18 @@
     "action"
   ],
   "dependencies": {
-    "@actions/core": "^1.2.4",
-    "@actions/github": "^4.0.0",
-    "@erebos/bzz-feed": "^0.13.2",
-    "@erebos/secp256k1": "^0.10.0",
-    "@erebos/swarm-node": "^0.13.0",
-    "glob": "^7.1.6",
-    "mime-types": "^2.1.27"
+    "@actions/core": "^1.6.0",
+    "@actions/github": "^5.0.0",
+    "@ethersphere/bee-js": "^3.1.0",
+    "@noble/hashes": "^0.4.3",
+    "@noble/secp256k1": "^1.3.0"
   },
   "devDependencies": {
-    "@zeit/ncc": "^0.22.3"
+    "@vercel/ncc": "^0.33.0",
+    "typescript": "^4.5.3"
   },
   "scripts": {
-    "build": "ncc build index.js -o dist -m"
+    "dev": "ncc build test.ts -o build -w",
+    "build": "ncc build index.ts -o dist -m"
   }
 }

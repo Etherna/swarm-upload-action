@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "lib": [
+      "ESNext",
+      "ESNext.BigInt"
+    ],
+    "esModuleInterop": true,
+    "importHelpers": true,
+    "allowSyntheticDefaultImports": false,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "target": "ESNext",
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "outDir": "./build",
+    "rootDir": "./",
+    "baseUrl": "."
+  }
+}
