@@ -5,15 +5,18 @@ inputs:
     description: 'Local folder to upload'
     required: true
   gateway:
-    description: 'Swarm Gateway Host'
-    required: false
-    default: 'https://swarm-gateways.net'
+    description: 'Bee Gateway Host'
+    required: true
   defaultPath:
     description: 'Default path (eg: index.html)'
     required: false
-  feedTopic:
-    description: 'Feed topic hash (optional)'
+  errorPath:
+    description: 'Default path (eg: error.html)'
     required: false
+  batchId:
+    description: 'Batch Id used to upload data (optional)'
+    required: false
+    default: '0000000000000000000000000000000000000000000000000000000000000000'
   feedName:
     description: 'Feed topic name (optional)'
     required: false
@@ -21,7 +24,7 @@ inputs:
     description: 'Feed user (optional / required to update feed)'
     required: false
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'dist/index.js'
 branding:
   icon: 'upload-cloud'
