@@ -5,9 +5,8 @@ inputs:
     description: 'Local folder to upload'
     required: true
   gateway:
-    description: 'Swarm Gateway Host'
-    required: false
-    default: 'https://gateway.ethswarm.org'
+    description: 'Bee Gateway Host'
+    required: true
   defaultPath:
     description: 'Default path (eg: index.html)'
     required: false

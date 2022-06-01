@@ -1,6 +1,5 @@
-// import { utils } from "ethers"
-import type { Bee, Reference } from "@ethersphere/bee-js"
 import { privateToAddress } from "./address"
+import type { Bee, Reference } from "@ethersphere/bee-js"
 
 export async function updateFeed(bee: Bee, name: string, reference: Reference, batchId: string, privateKey: string) {
   const topic = bee.makeFeedTopic(name)

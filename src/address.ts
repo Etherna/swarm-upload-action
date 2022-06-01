@@ -1,4 +1,4 @@
-import { keccak_256 } from "@noble/hashes/lib/sha3"
+import { keccak_256 } from "@noble/hashes/sha3"
 import { getPublicKey } from "@noble/secp256k1"
 
 export function privateToAddress(privateKey: string) {
