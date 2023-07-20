@@ -23,6 +23,9 @@ inputs:
   feedUserPrivateKey:
     description: 'Feed user (optional / required to update feed)'
     required: false
+  ethernaApiKey:
+    description: 'Api key if you are use the etherna gateway (https://gateway.etherna.io)'
+    required: false
 runs:
   using: 'node16'
   main: 'dist/index.js'
