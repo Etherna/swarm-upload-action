@@ -1,16 +1,39 @@
 import * as core from "@actions/core"
-import { Bee } from "@ethersphere/bee-js"
+import { BatchId, BeeClient, Reference } from "@etherna/api-js/clients"
+import axios from "axios"
 
 import { updateFeed } from "./update-feed"
+import apikeySignin from "./apikey-signin"
+import { prepareData } from "./prepare"
 
 export async function run() {
   const localRoot = core.getInput("localRoot").replace(/\/$/, "")
-  const gateway = core.getInput("gateway").replace(/\/$/, "")
+  const gatewayUrl = core.getInput("gateway").replace(/\/$/, "")
+  const ethernaApiKey = core.getInput("ethernaApiKey")
   const defaultPath = core.getInput("defaultPath")
   const errorPath = core.getInput("errorPath")
-  const batchId = core.getInput("batchId")
+  const batchId = core.getInput("batchId") as BatchId
+  const feedName = core.getInput("feedName")
+  const feedOwnerPrivateKey = core
+    .getInput("feedOwnerPrivateKey")
+    ?.replace(/^(0x)?/, "0x")
 
-  const bee = new Bee(gateway)
+  const { accessToken, managedPrivateKey } = ethernaApiKey
+    ? await apikeySignin(ethernaApiKey)
+    : undefined
+
+  const ownerPrivateKey = managedPrivateKey || feedOwnerPrivateKey
+
+  const axiosInstance = axios.create({
+    baseURL: gatewayUrl,
+    headers: {
+      Authorization: accessToken ? `Bearer ${accessToken}` : undefined,
+    },
+  })
+  const bee = new BeeClient(gatewayUrl, {
+    axios: axiosInstance,
+    signer: ownerPrivateKey,
+  })
 
   let siteHash = null
 
@@ -22,15 +45,27 @@ export async function run() {
     core.info("Uploading local folder to swarm...")
 
     // Upload
-    const uploadResult = await bee.uploadFilesFromDirectory(batchId, localRoot, {
-      indexDocument: defaultPath,
-      errorDocument: errorPath,
-    })
-    siteHash = uploadResult.reference
+    const data = await prepareData(localRoot)
+    const response = await axiosInstance.post<{ reference: Reference }>(
+      `bzz`,
+      data,
+      {
+        responseType: "json",
+        headers: {
+          "content-type": "application/x-tar",
+          "swarm-collection": "true",
+          "swarm-index-document": defaultPath,
+          "swarm-error-document": errorPath,
+          "swarm-postage-batch-id": batchId,
+        },
+      }
+    )
 
-    core.info(`✅ App deployed to ${gateway}/bzz/${siteHash}`)
+    siteHash = response.data.reference
+
+    core.info(`✅ App deployed to ${gatewayUrl}/bzz/${siteHash}`)
   } catch (error) {
-    core.error("❌ Failed to upload to swarm");
+    core.error("❌ Failed to upload to swarm")
     core.setFailed(error.message)
   }
 
@@ -38,19 +73,16 @@ export async function run() {
    * 2 - Updated feed
    */
 
-  const feedName = core.getInput("feedName")
-  const feedUserPrivateKey = core.getInput("feedUserPrivateKey")
-
-  const canUpdateFeed = feedName && feedUserPrivateKey
+  const canUpdateFeed = feedName && ownerPrivateKey
 
   if (!canUpdateFeed) return
 
   try {
-    const feedManifest = await updateFeed(bee, feedName, siteHash, batchId, feedUserPrivateKey)
+    const feedManifest = await updateFeed(bee, feedName, siteHash, batchId)
 
-    core.info(`✅ Feed updated. Url: ${gateway}/bzz/${feedManifest}`)
+    core.info(`✅ Feed updated. Url: ${gatewayUrl}/bzz/${feedManifest}`)
   } catch (error) {
-    core.error("❌ Failed to update feed");
+    core.error("❌ Failed to update feed")
     core.setFailed(error.message)
   }
 }

@@ -1,10 +1,19 @@
-import { privateToAddress } from "./address"
-import type { Bee, Reference } from "@ethersphere/bee-js"
+import { BeeClient, Reference } from "@etherna/api-js/clients"
 
-export async function updateFeed(bee: Bee, name: string, reference: Reference, batchId: string, privateKey: string) {
-  const topic = bee.makeFeedTopic(name)
-  const fixedPrivateKey = privateKey.replace(/^(0x)?/, "0x")
-  const feedWriter = bee.makeFeedWriter("sequence", topic, fixedPrivateKey)
-  await feedWriter.upload(batchId, reference)
-  return await bee.createFeedManifest(batchId, "sequence", topic, privateToAddress(fixedPrivateKey))
+export async function updateFeed(
+  bee: BeeClient,
+  name: string,
+  reference: Reference,
+  batchId: string
+) {
+  const feed = bee.feed.makeFeed(name, bee.signer!.address, "sequence")
+  const feedWriter = bee.feed.makeWriter(feed)
+
+  await feedWriter.upload(reference, {
+    batchId,
+  })
+
+  return await bee.feed.createRootManifest(feed, {
+    batchId,
+  })
 }

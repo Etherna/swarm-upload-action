@@ -1,31 +1,34 @@
-name: 'Swarm Upload'
-description: 'Upload your dapp to the Swarm decentralized storage'
+name: "Swarm Upload"
+description: "Upload your dapp to the Swarm decentralized storage"
 inputs:
   localRoot:
-    description: 'Local folder to upload'
+    description: "Local folder to upload"
     required: true
   gateway:
-    description: 'Bee Gateway Host'
+    description: "Bee Gateway Host"
     required: true
   defaultPath:
-    description: 'Default path (eg: index.html)'
+    description: "Default path (eg: index.html)"
     required: false
   errorPath:
-    description: 'Default path (eg: error.html)'
+    description: "Default path (eg: error.html)"
     required: false
   batchId:
-    description: 'Batch Id used to upload data (optional)'
+    description: "Batch Id used to upload data (optional)"
     required: false
-    default: '0000000000000000000000000000000000000000000000000000000000000000'
+    default: "0000000000000000000000000000000000000000000000000000000000000000"
   feedName:
-    description: 'Feed topic name (optional)'
+    description: "Feed topic name (optional)"
     required: false
-  feedUserPrivateKey:
-    description: 'Feed user (optional / required to update feed)'
+  feedOwnerPrivateKey:
+    description: "Feed owner (optional / required to update feed without an etherna account)"
+    required: false
+  ethernaApiKey:
+    description: "Api key if you are use the etherna gateway (https://gateway.etherna.io)"
     required: false
 runs:
-  using: 'node16'
-  main: 'dist/index.js'
+  using: "node16"
+  main: "dist/index.js"
 branding:
-  icon: 'upload-cloud'
-  color: 'white'
+  icon: "upload-cloud"
+  color: "white"
