@@ -6,11 +6,13 @@ export default async function apikeySignin(
 ) {
   try {
     const [username, password] = apiKey.split(".")
-    const { data } = await axios.post<{ access_token: string }>(
+    const {
+      data: { access_token },
+    } = await axios.post<{ access_token: string }>(
       `${ssoUrl}/connect/token`,
       new URLSearchParams({
         grant_type: "password",
-        scope: "openid userApi.gateway userApi.sso",
+        scope: "profile ether_accounts openid userApi.gateway userApi.sso",
         username,
         password,
       }),
@@ -22,7 +24,21 @@ export default async function apikeySignin(
       }
     )
 
-    return data.access_token
+    const {
+      data: { etherManagedPrivateKey },
+    } = await axios.get<{ etherManagedPrivateKey: string | null }>(
+      `${ssoUrl}/api/v0.3/Identity`,
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    )
+
+    return {
+      accessToken: access_token,
+      managedPrivateKey: etherManagedPrivateKey,
+    }
   } catch (error) {
     console.log(error)
     throw error

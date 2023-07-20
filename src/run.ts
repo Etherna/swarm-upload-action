@@ -14,13 +14,15 @@ export async function run() {
   const errorPath = core.getInput("errorPath")
   const batchId = core.getInput("batchId") as BatchId
   const feedName = core.getInput("feedName")
-  const feedUserPrivateKey = core
-    .getInput("feedUserPrivateKey")
+  const feedOwnerPrivateKey = core
+    .getInput("feedOwnerPrivateKey")
     ?.replace(/^(0x)?/, "0x")
 
-  const accessToken = ethernaApiKey
+  const { accessToken, managedPrivateKey } = ethernaApiKey
     ? await apikeySignin(ethernaApiKey)
     : undefined
+
+  const ownerPrivateKey = managedPrivateKey || feedOwnerPrivateKey
 
   const axiosInstance = axios.create({
     baseURL: gatewayUrl,
@@ -30,7 +32,7 @@ export async function run() {
   })
   const bee = new BeeClient(gatewayUrl, {
     axios: axiosInstance,
-    signer: feedUserPrivateKey,
+    signer: ownerPrivateKey,
   })
 
   let siteHash = null
@@ -71,7 +73,7 @@ export async function run() {
    * 2 - Updated feed
    */
 
-  const canUpdateFeed = feedName && feedUserPrivateKey
+  const canUpdateFeed = feedName && ownerPrivateKey
 
   if (!canUpdateFeed) return
 
