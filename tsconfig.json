@@ -9,6 +9,8 @@
     "skipDefaultLibCheck": true,
     "target": "ESNext",
     "noImplicitAny": true,
+    "strict": true,
+    "strictNullChecks": true,
     "moduleResolution": "node",
     "outDir": "./build",
     "rootDir": "./",

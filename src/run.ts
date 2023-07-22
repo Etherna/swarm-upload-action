@@ -14,13 +14,41 @@ export async function run() {
   const errorPath = core.getInput("errorPath")
   const batchId = core.getInput("batchId") as BatchId
   const feedName = core.getInput("feedName")
-  const feedOwnerPrivateKey = core
-    .getInput("feedOwnerPrivateKey")
-    ?.replace(/^(0x)?/, "0x")
+  const feedOwnerPrivateKey = core.getInput("feedOwnerPrivateKey")?.replace(/^(0x)?/, "0x")
 
-  const { accessToken, managedPrivateKey } = ethernaApiKey
-    ? await apikeySignin(ethernaApiKey)
-    : undefined
+  const signinResponse = ethernaApiKey ? await apikeySignin(ethernaApiKey) : null
+
+  if (!batchId) {
+    core.error("❌ Missing batchId")
+    core.setFailed("Missing batchId")
+    return
+  }
+  if (!localRoot) {
+    core.error("❌ Missing localRoot")
+    core.setFailed("Missing localRoot")
+    return
+  }
+  if (!gatewayUrl) {
+    core.error("❌ Missing gateway url")
+    core.setFailed("Missing gateway url")
+    return
+  }
+  if (gatewayUrl === "https://gateway.etherna.io" && !ethernaApiKey) {
+    core.error("❌ Missing ethernaApiKey")
+    core.setFailed("Missing ethernaApiKey")
+    return
+  }
+
+  if (ethernaApiKey && !signinResponse) {
+    core.error("❌ Failed to sign in with apikey")
+    core.setFailed("Failed to sign in with apikey")
+    return
+  }
+
+  const { accessToken, managedPrivateKey } = signinResponse ?? {
+    accessToken: undefined,
+    managedPrivateKey: undefined,
+  }
 
   const ownerPrivateKey = managedPrivateKey || feedOwnerPrivateKey
 
@@ -46,25 +74,21 @@ export async function run() {
 
     // Upload
     const data = await prepareData(localRoot)
-    const response = await axiosInstance.post<{ reference: Reference }>(
-      `bzz`,
-      data,
-      {
-        responseType: "json",
-        headers: {
-          "content-type": "application/x-tar",
-          "swarm-collection": "true",
-          "swarm-index-document": defaultPath,
-          "swarm-error-document": errorPath,
-          "swarm-postage-batch-id": batchId,
-        },
-      }
-    )
+    const response = await axiosInstance.post<{ reference: Reference }>(`bzz`, data, {
+      responseType: "json",
+      headers: {
+        "content-type": "application/x-tar",
+        "swarm-collection": "true",
+        "swarm-index-document": defaultPath,
+        "swarm-error-document": errorPath,
+        "swarm-postage-batch-id": batchId,
+      },
+    })
 
     siteHash = response.data.reference
 
     core.info(`✅ App deployed to ${gatewayUrl}/bzz/${siteHash}`)
-  } catch (error) {
+  } catch (error: any) {
     core.error("❌ Failed to upload to swarm")
     core.setFailed(error.message)
   }
@@ -75,13 +99,13 @@ export async function run() {
 
   const canUpdateFeed = feedName && ownerPrivateKey
 
-  if (!canUpdateFeed) return
+  if (!canUpdateFeed || !siteHash) return
 
   try {
     const feedManifest = await updateFeed(bee, feedName, siteHash, batchId)
 
     core.info(`✅ Feed updated. Url: ${gatewayUrl}/bzz/${feedManifest}`)
-  } catch (error) {
+  } catch (error: any) {
     core.error("❌ Failed to update feed")
     core.setFailed(error.message)
   }

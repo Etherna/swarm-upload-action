@@ -7,16 +7,15 @@ inputs:
   gateway:
     description: "Bee Gateway Host"
     required: true
+  batchId:
+    description: "Batch Id used to upload data (optional)"
+    required: true
   defaultPath:
     description: "Default path (eg: index.html)"
     required: false
   errorPath:
     description: "Default path (eg: error.html)"
     required: false
-  batchId:
-    description: "Batch Id used to upload data (optional)"
-    required: false
-    default: "0000000000000000000000000000000000000000000000000000000000000000"
   feedName:
     description: "Feed topic name (optional)"
     required: false

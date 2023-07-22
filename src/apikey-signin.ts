@@ -1,9 +1,6 @@
 import axios from "axios"
 
-export default async function apikeySignin(
-  apiKey: string,
-  ssoUrl = "https://sso.etherna.io"
-) {
+export default async function apikeySignin(apiKey: string, ssoUrl = "https://sso.etherna.io") {
   try {
     const [username, password] = apiKey.split(".")
     const {
@@ -26,14 +23,11 @@ export default async function apikeySignin(
 
     const {
       data: { etherManagedPrivateKey },
-    } = await axios.get<{ etherManagedPrivateKey: string | null }>(
-      `${ssoUrl}/api/v0.3/Identity`,
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      }
-    )
+    } = await axios.get<{ etherManagedPrivateKey: string | null }>(`${ssoUrl}/api/v0.3/Identity`, {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    })
 
     return {
       accessToken: access_token,
@@ -41,6 +35,7 @@ export default async function apikeySignin(
     }
   } catch (error) {
     console.log(error)
-    throw error
+
+    return null
   }
 }

@@ -23,10 +23,10 @@ Upload your dapp to the Swarm decentralized storage (https://www.ethswarm.org/).
 | --------------------- | ------------------------------- | ------------- | -------------------------------------------------------------------------------------------------------- |
 | `localRoot`           | build                           |               | Local folder to upload                                                                                   |
 | `gateway`             | https://gateway.etherna.io      |               | Swarm Gateway Host                                                                                       |
+| `batchId`             | 6a6176690...6a6176690           |               | Batch Id used to upload data                                                                             |
 | `ethernaApiKey`       | xxxxxxxxx.xxxxxxxxxxxxxxxxxxxxx |               | Etherna Api key (optional / required for `https://gateway.etherna.io` get one at https://sso.etherna.io) |
 | `defaultPath`         | index.html                      |               | Default path (optional)                                                                                  |
 | `errorPath`           | error.html                      |               | Error path (optional)                                                                                    |
-| `batchId`             | 6a6176690...6a6176690           | 00000...(x64) | Batch Id used to upload data (optional)                                                                  |
 | `feedName`            | MyWebsite                       |               | Feed topic name (optional)                                                                               |
 | `feedOwnerPrivateKey` | 617610264fc...87897bf1c1c       |               | Feed owner (optional / required to update feed without an etherna account)                               |
 
