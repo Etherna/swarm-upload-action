@@ -1,5 +1,5 @@
 import * as core from "@actions/core"
-import { BatchId, BeeClient, Reference } from "@etherna/api-js/clients"
+import { BatchId, BeeClient, FeedType, Reference } from "@etherna/sdk-js/clients"
 import axios from "axios"
 
 import { updateFeed } from "./update-feed"
@@ -14,6 +14,7 @@ export async function run() {
   const errorPath = core.getInput("errorPath")
   const batchId = core.getInput("batchId") as BatchId
   const feedName = core.getInput("feedName")
+  const feedType = (core.getInput("feedType") || "sequence") as FeedType
   const feedOwnerPrivateKey = core.getInput("feedOwnerPrivateKey")?.replace(/^(0x)?/, "0x")
 
   const signinResponse = ethernaApiKey ? await apikeySignin(ethernaApiKey) : null
@@ -102,9 +103,20 @@ export async function run() {
   if (!canUpdateFeed || !siteHash) return
 
   try {
-    const feedManifest = await updateFeed(bee, feedName, siteHash, batchId)
+    const feedManifest = await updateFeed({
+      bee,
+      topicName: feedName,
+      type: feedType,
+      reference: siteHash,
+      batchId,
+    })
 
-    core.info(`✅ Feed updated. Url: ${gatewayUrl}/bzz/${feedManifest}`)
+    if (feedType === "epoch") {
+      // epoch feeds are not yet supported by swarm
+      core.info(`✅ Feed updated. Url: ${gatewayUrl}/bzz/swarmfeed.eth/${feedManifest}`)
+    } else {
+      core.info(`✅ Feed updated. Url: ${gatewayUrl}/bzz/${feedManifest}`)
+    }
   } catch (error: any) {
     core.error("❌ Failed to update feed")
     core.setFailed(error.message)

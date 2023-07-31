@@ -27,10 +27,10 @@
   dependencies:
     tunnel "^0.0.6"
 
-"@etherna/api-js@2.1.5":
-  version "2.1.5"
-  resolved "https://registry.yarnpkg.com/@etherna/api-js/-/api-js-2.1.5.tgz#0ff85d72927a385d206e91c01b8d2f112888c75d"
-  integrity sha512-SpnJPNi1u3LtfVFmlhaXN0KLyBqvG08uoAXV9+d7EKbl03YDiSscs+YfO7v5hrmfOno6LorQFbhS6PJMCtw0rw==
+"@etherna/sdk-js@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@etherna/sdk-js/-/sdk-js-1.0.0.tgz#d0ed30c33b3a2cf48473e6e07e9691c4313b48fc"
+  integrity sha512-5w0m8TXtWCeXCqqP+jZUNKP1hCZGcQRGL5ULlX4BQZbqYA7z15EkwUZyQJkUmZny+Ch5lGFlJKVvBwqc4ncTfA==
 
 "@isaacs/cliui@^8.0.2":
   version "8.0.2"

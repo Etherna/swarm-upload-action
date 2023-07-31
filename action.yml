@@ -19,6 +19,9 @@ inputs:
   feedName:
     description: "Feed topic name (optional)"
     required: false
+  feedType:
+    description: "Feed type (optional)"
+    required: false
   feedOwnerPrivateKey:
     description: "Feed owner (optional / required to update feed without an etherna account)"
     required: false

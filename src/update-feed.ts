@@ -1,12 +1,15 @@
-import { BeeClient, Reference } from "@etherna/api-js/clients"
+import { BeeClient, Reference } from "@etherna/sdk-js/clients"
 
-export async function updateFeed(
-  bee: BeeClient,
-  name: string,
-  reference: Reference,
+type UpdateFeedConfig = {
+  bee: BeeClient
+  topicName: string
+  type: "epoch" | "sequence"
+  reference: Reference
   batchId: string
-) {
-  const feed = bee.feed.makeFeed(name, bee.signer!.address, "sequence")
+}
+
+export async function updateFeed({ bee, batchId, reference, topicName, type }: UpdateFeedConfig) {
+  const feed = bee.feed.makeFeed(topicName, bee.signer!.address, type)
   const feedWriter = bee.feed.makeWriter(feed)
 
   await feedWriter.upload(reference, {

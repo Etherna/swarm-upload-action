@@ -1,4 +1,4 @@
-import { FolderBuilder } from "@etherna/api-js/classes"
+import { FolderBuilder } from "@etherna/sdk-js/classes"
 import { stat, readFile } from "node:fs/promises"
 import { glob } from "glob"
 import { lookup } from "mime-types"
